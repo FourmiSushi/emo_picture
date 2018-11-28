@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'pictures.dart';
 
 void main() => runApp(EmoPictureApp());
 
@@ -11,6 +12,7 @@ class EmoPictureApp extends StatelessWidget{
         appBar: AppBar(
           title: Text('EmoLocation'),
         ),
+        body: Pictures(),
       ),
     );
   }

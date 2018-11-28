@@ -3,7 +3,17 @@ import 'package:flutter/material.dart';
 class PicturesState extends State<Pictures> {
   @override
   Widget build(BuildContext context){
-    return Text('ここに画像を表示する部分を書いていくよ');
+    return Padding(
+      padding: EdgeInsets.only(top: 64.0, bottom: 64.0),
+      child: PageView(
+        controller: PageController(viewportFraction: 0.75),
+        children: <Widget>[
+          Text('ここに画像が入るよ1'),
+          Text('ここに画像が入るよ2'),
+          Text('ここに画像が入るよ3'),
+        ],
+      ),
+    );
   }
 }
 

@@ -5,23 +5,28 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class PicturesState extends State<Pictures> {
   final Set<String> _favorited = Set<String>();
+  SharedPreferences prefs;
   @override
   Widget build(BuildContext context) {
+    _initSharedpreferences();
     return Scaffold(
-      appBar: AppBar(
-        title: Text('EmoPicture'),
-        backgroundColor: Colors.black,
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.list),onPressed: _pushfavorited,)
-        ],
-      ),
-    body: Padding(
-      padding: EdgeInsets.only(top: 64.0, bottom: 64.0),
-      child: PageView(
-        controller: PageController(viewportFraction: 0.85),
-        children: List.generate(5, (i) => _pageImage(i)),
-      ),
-    ));
+        appBar: AppBar(
+          title: Text('EmoPicture'),
+          backgroundColor: Colors.black,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.list),
+              onPressed: _pushfavorited,
+            )
+          ],
+        ),
+        body: Padding(
+          padding: EdgeInsets.only(top: 64.0, bottom: 64.0),
+          child: PageView(
+            controller: PageController(viewportFraction: 0.85),
+            children: List.generate(5, (i) => _pageImage(i)),
+          ),
+        ));
   }
 
   Padding _pageImage(page) {
@@ -56,8 +61,7 @@ class PicturesState extends State<Pictures> {
                     color: favorited ? Colors.red : Colors.white54),
                 iconSize: 48,
                 padding: EdgeInsets.all(16),
-                onPressed: () async{
-                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                onPressed: () async {
                   setState(() {
                     if (favorited) {
                       _favorited.remove(id);
@@ -85,13 +89,19 @@ class PicturesState extends State<Pictures> {
   }
 
   void _pushfavorited() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     Navigator.of(context)
         .push(new MaterialPageRoute<void>(builder: (BuildContext context) {
+          Color color = Colors.black;
       final Iterable<ListTile> tiles = _favorited.map((String fv) {
         return new ListTile(
-          title: new Text('id: ' + fv),
+          title: new Text('Id: ' + fv,style: TextStyle(
+            color: color
+          ),),
           onTap: () => launch(prefs.getString(fv)),
+          onLongPress: () {
+            prefs.remove(fv);
+            _favorited.remove(fv);
+          },
         );
       });
       final List<Widget> divided = ListTile.divideTiles(
@@ -107,6 +117,11 @@ class PicturesState extends State<Pictures> {
             children: divided,
           ));
     }));
+  }
+
+  void _initSharedpreferences() async {
+    prefs = await SharedPreferences.getInstance();
+    _favorited.addAll(prefs.getKeys());
   }
 }
 

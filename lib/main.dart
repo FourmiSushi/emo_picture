@@ -10,7 +10,7 @@ class EmoPictureApp extends StatelessWidget{
       title: 'EmoPicture',
       home: Scaffold(
         appBar: AppBar(
-          title: Text('EmoLocation'),
+          title: Text('EmoPicture'),
         ),
         body: Pictures(),
       ),

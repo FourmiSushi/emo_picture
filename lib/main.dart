@@ -8,12 +8,7 @@ class EmoPictureApp extends StatelessWidget{
   Widget build(BuildContext context){
     return new MaterialApp(
       title: 'EmoPicture',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('EmoPicture'),
-        ),
-        body: Pictures(),
-      ),
-    );
+      home: Pictures(),
+      );
   }
 }

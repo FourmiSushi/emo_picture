@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 import 'picsum.dart';
 
 class PicturesState extends State<Pictures> {
   final Set<String> _favorited = Set<String>();
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('EmoPicture'),
+        backgroundColor: Colors.black,
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.list),onPressed: _pushfavorited,)
+        ],
+      ),
+    body: Padding(
       padding: EdgeInsets.only(top: 64.0, bottom: 64.0),
       child: PageView(
         controller: PageController(viewportFraction: 0.85),
-        children: List.generate(5, (i) => pageImage(i)),
+        children: List.generate(5, (i) => _pageImage(i)),
       ),
-    );
+    ));
   }
 
-  Padding pageImage(page) {
+  Padding _pageImage(page) {
     String id = randomSelectedList[page]['id'].toString();
     String author = randomSelectedList[page]['author'];
     bool favorited = _favorited.contains(id);
@@ -69,6 +76,29 @@ class PicturesState extends State<Pictures> {
             ],
           ),
         ));
+  }
+
+  void _pushfavorited() {
+    Navigator.of(context)
+        .push(new MaterialPageRoute<void>(builder: (BuildContext context) {
+      final Iterable<ListTile> tiles = _favorited.map((String fv) {
+        return new ListTile(
+          title: new Text('id: ' + fv),
+        );
+      });
+      final List<Widget> divided = ListTile.divideTiles(
+        context: context,
+        tiles: tiles,
+      ).toList();
+      return new Scaffold(
+          appBar: new AppBar(
+            title: const Text('Favorites'),
+            backgroundColor: Colors.black,
+          ),
+          body: new ListView(
+            children: divided,
+          ));
+    }));
   }
 }
 

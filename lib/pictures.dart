@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
+import 'picsum.dart';
 
 class PicturesState extends State<Pictures> {
   @override
@@ -7,13 +9,13 @@ class PicturesState extends State<Pictures> {
       padding: EdgeInsets.only(top: 64.0, bottom: 64.0),
       child: PageView(
         controller: PageController(viewportFraction: 0.85),
-        children: List.generate(5, (i) => pageImage(i)),
+        children: List.generate(5, (i) => pageImage()),
       ),
     );
   }
 
-  Padding pageImage(int page) {
-    String additionaltext = '&' * page;
+  Padding pageImage() {
+    var id = idAuthorMapList[Random().nextInt(idAuthorMapList.length - 1)]['id'];
     bool favorited = false;
     return Padding(
         padding: EdgeInsets.all(16),
@@ -31,7 +33,7 @@ class PicturesState extends State<Pictures> {
               ],
               image: DecorationImage(
                   image: NetworkImage(
-                      'https://picsum.photos/800/1400/?random$additionaltext'),
+                      'https://picsum.photos/800/1400/?image=$id'),
                   fit: BoxFit.fitWidth)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

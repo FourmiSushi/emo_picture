@@ -3980,4 +3980,4 @@ const String idAuthor = '''
 
 var idAuthorMapList = json.decode(idAuthor);
 
-List<String> randomSelectedIdList = List.generate(5, (i) => idAuthorMapList[Random().nextInt(idAuthorMapList.length)]['id'].toString());
+List<Map> randomSelectedList = List.generate(5, (i) => idAuthorMapList[Random().nextInt(idAuthorMapList.length)]);

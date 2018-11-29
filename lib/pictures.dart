@@ -16,7 +16,8 @@ class PicturesState extends State<Pictures> {
   }
 
   Padding pageImage(page) {
-    String id = randomSelectedIdList[page];
+    String id = randomSelectedList[page]['id'].toString();
+    String author = randomSelectedList[page]['author'];
     bool favorited = _favorited.contains(id);
     return Padding(
         padding: EdgeInsets.all(16),
@@ -38,6 +39,7 @@ class PicturesState extends State<Pictures> {
                   fit: BoxFit.fitWidth)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               IconButton(
                 icon: Icon(favorited ? Icons.favorite : Icons.favorite_border,
@@ -53,7 +55,17 @@ class PicturesState extends State<Pictures> {
                     }
                   });
                 },
-              )
+              ),
+              Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  author,
+                  style: TextStyle(
+                    color: Colors.white54,
+                    fontSize: 32,
+                  ),
+                ),
+              ),
             ],
           ),
         ));

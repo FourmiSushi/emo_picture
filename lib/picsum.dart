@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 const String idAuthor = '''
 [
@@ -3977,4 +3978,6 @@ const String idAuthor = '''
 ]
 ''';
 
-List<Map<int, String>> idAuthorMapList = json.decode(idAuthor);
+var idAuthorMapList = json.decode(idAuthor);
+
+List<String> randomSelectedIdList = List.generate(5, (i) => idAuthorMapList[Random().nextInt(idAuthorMapList.length)]['id'].toString());

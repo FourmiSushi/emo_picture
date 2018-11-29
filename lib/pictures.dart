@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'picsum.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PicturesState extends State<Pictures> {
   final Set<String> _favorited = Set<String>();
@@ -25,6 +27,7 @@ class PicturesState extends State<Pictures> {
   Padding _pageImage(page) {
     String id = randomSelectedList[page]['id'].toString();
     String author = randomSelectedList[page]['author'];
+    String posturl = randomSelectedList[page]['post_url'];
     bool favorited = _favorited.contains(id);
     return Padding(
         padding: EdgeInsets.all(16),
@@ -53,12 +56,15 @@ class PicturesState extends State<Pictures> {
                     color: favorited ? Colors.red : Colors.white54),
                 iconSize: 48,
                 padding: EdgeInsets.all(16),
-                onPressed: () {
+                onPressed: () async{
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
                   setState(() {
                     if (favorited) {
                       _favorited.remove(id);
+                      prefs.remove(id);
                     } else {
                       _favorited.add(id);
+                      prefs.setString(id, posturl);
                     }
                   });
                 },
@@ -78,12 +84,14 @@ class PicturesState extends State<Pictures> {
         ));
   }
 
-  void _pushfavorited() {
+  void _pushfavorited() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     Navigator.of(context)
         .push(new MaterialPageRoute<void>(builder: (BuildContext context) {
       final Iterable<ListTile> tiles = _favorited.map((String fv) {
         return new ListTile(
           title: new Text('id: ' + fv),
+          onTap: () => launch(prefs.getString(fv)),
         );
       });
       final List<Widget> divided = ListTile.divideTiles(
